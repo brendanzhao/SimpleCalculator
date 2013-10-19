@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">12dp</dimen>
+    <dimen name="button_table_horizontal_margin">7dp</dimen>
+    <dimen name="calculation_box_bottom_margin">12dp</dimen>
+    <dimen name="calculation_box_horizontal_margin">-2dp</dimen>
+    <dimen name="calculation_box_horizontal_padding">12dp</dimen>
+    <dimen name="currentcalculation_bottom_margin">10dp</dimen>
+    <dimen name="currentcalculation_text_size">55sp</dimen>
+    <dimen name="savedcalculation_text_size">30sp</dimen>
+    <dimen name="savedcalculation_top_margin">12dp</dimen> 
+</resources>
