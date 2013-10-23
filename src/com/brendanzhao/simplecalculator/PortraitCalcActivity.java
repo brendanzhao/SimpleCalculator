@@ -24,7 +24,7 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 	 * Represents the maximum length of input inside of the calculator.
 	 */
 	private static final int maxCalculationLength = 16;
-	
+
 	/**
 	 * Represents the display of the number entered before an operator was tapped.
 	 */
@@ -43,6 +43,7 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 		bufferedCalculationView = (TextView) findViewById(R.id.bufferedcalculation);
 		currentCalculationView = (TextView) findViewById(R.id.currentcalculation);
 		calculation = new Calculation();
+		updateTextViews();
 		initializeButtons();
 	}
 
@@ -107,19 +108,15 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 			else if (calculation.getCurrentNumberString().equalsIgnoreCase("0"))
 				calculation.setCurrentNumberString(buttonPressed);
 			else
-				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(
-						buttonPressed));
+				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(buttonPressed));
 			break;
 		case R.id.decimal:
 			if (!calculation.getCurrentNumberString().contains(buttonPressed))
-				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(
-						buttonPressed));
+				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(buttonPressed));
 			break;
 		case R.id.negative:
-			calculation.toggleNegative();
-			break;
 		case R.id.squareroot:
-			calculation.squareRoot();
+			calculation.singleBrainPower(buttonPressed);
 			break;
 		case R.id.add:
 		case R.id.subtract:

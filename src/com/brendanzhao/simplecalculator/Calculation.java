@@ -3,8 +3,7 @@ package com.brendanzhao.simplecalculator;
 import java.math.BigDecimal;
 
 /**
- * @author Brendan Zhao 
- * Represents the calculation that is created by the user.
+ * @author Brendan Zhao Represents the calculation that is created by the user.
  */
 public class Calculation {
 
@@ -22,7 +21,7 @@ public class Calculation {
 	 * Represents the internal value of the current number used to calculate operations.
 	 */
 	private BigDecimal currentNumber;
-	
+
 	/**
 	 * Represents the internal value of the buffer number used to calculate operations.
 	 */
@@ -50,23 +49,27 @@ public class Calculation {
 	}
 
 	/**
-	 * Processes the negative button logic.
+	 * Processes calculations involving only one number.
+	 * 
+	 * @param buttonPressed
+	 *            Represents the calculation to be performed.
 	 */
-	public void toggleNegative() {
+	public void singleBrainPower(String buttonPressed) {
 		currentNumber = new BigDecimal(currentNumberString);
-		currentNumber = currentNumber.multiply(new BigDecimal(-1));
+
+		switch (buttonPressed.charAt(0)) {
+		case '\u00B1':
+			currentNumber = currentNumber.multiply(new BigDecimal(-1));
+			break;
+		case '\u221a':
+			if (currentNumber.signum() == 1)
+				currentNumber = BigDecimal.valueOf(Math.sqrt(currentNumber.doubleValue()));
+			break;
+		default:
+			break;
+		}
+
 		currentNumberString = currentNumber.toPlainString();
 	}
-	
-	/**
-	 * Processes the square root button logic.
-	 */
-	public void squareRoot() {
-		currentNumber = new BigDecimal(currentNumberString);
-		currentNumber = BigDecimal.valueOf(Math.sqrt(currentNumber.doubleValue()));
-		currentNumberString = currentNumber.toPlainString();
-	}
-	
-	
-	
+
 }
