@@ -10,27 +10,39 @@ import android.widget.TextView;
 
 /**
  * This represents the main activity for the calculator app.
+ * 
  * @author Brendan Zhao
  */
 public class PortraitCalcActivity extends Activity implements OnClickListener {
 
 	/**
-	 * Represents the value entered before an operator was tapped.
+	 * Represents the actual calculation that the user is creating.
 	 */
-	private TextView bufferedCalculation;
+	private Calculation calculation;
+
+	/**
+	 * Represents the maximum length of input inside of the calculator.
+	 */
+	private static final int maxCalculationLength = 17;
 	
 	/**
-	 * Represents the value currently being typed.
+	 * Represents the display of the number entered before an operator was tapped.
 	 */
-	private TextView currentCalculation;
-	
+	private TextView bufferedCalculationView;
+
+	/**
+	 * Represents the display of the number being currently typed.
+	 */
+	private TextView currentCalculationView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.portrait_layout);
-		
-		bufferedCalculation = (TextView) findViewById(R.id.bufferedcalculation);
-		currentCalculation = (TextView) findViewById(R.id.currentcalculation);
+
+		bufferedCalculationView = (TextView) findViewById(R.id.bufferedcalculation);
+		currentCalculationView = (TextView) findViewById(R.id.currentcalculation);
+		calculation = new Calculation();
 		initializeButtons();
 	}
 
@@ -40,7 +52,7 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.portrait_calc, menu);
 		return true;
 	}
-	
+
 	/**
 	 * Sets the on click listeners of every button on the keypad.
 	 */
@@ -66,11 +78,22 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 		findViewById(R.id.clear).setOnClickListener(this);
 	}
 
+	/**
+	 * Updates the calculator text views that are displaying the numbers.
+	 */
+	private void updateTextViews() {
+		currentCalculationView.setText(calculation.getCurrentNumberString());
+		bufferedCalculationView.setText(calculation.getBufferNumberString());
+	}
+
 	@Override
 	public void onClick(View button) {
 		
+		if (calculation.getCurrentNumberString().length() > maxCalculationLength && button.getId() != R.id.clear)
+			return;
+
 		String buttonPressed = ((Button) button).getText().toString();
-	
+
 		switch (button.getId()) {
 		case R.id.zero:
 		case R.id.one:
@@ -82,14 +105,34 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 		case R.id.seven:
 		case R.id.eight:
 		case R.id.nine:
+			if (calculation.getCurrentNumberString().equalsIgnoreCase("0"))
+				calculation.setCurrentNumberString(buttonPressed);
+			else
+				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(
+						buttonPressed));
+			break;
 		case R.id.decimal:
-			if (currentCalculation.getText() == "0")
-				currentCalculation.setText(buttonPressed);
-			else 
-				currentCalculation.append(buttonPressed);
+			if (!calculation.getCurrentNumberString().contains(buttonPressed))
+				calculation.setCurrentNumberString(calculation.getCurrentNumberString().concat(
+						buttonPressed));
+			break;
+		case R.id.negative:
+		case R.id.squareroot:
+			break;
+		case R.id.add:
+		case R.id.subtract:
+		case R.id.multiply:
+		case R.id.divide:
+			break;
+		case R.id.clear:
+			calculation = new Calculation();
+			break;
+		case R.id.equals:
 			break;
 		default:
 			break;
 		}
+
+		updateTextViews();
 	}
 }
