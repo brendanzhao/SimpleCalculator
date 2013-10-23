@@ -50,18 +50,23 @@ public class Calculation {
 	}
 
 	/**
-	 * Updates the internal BigDecimal values and is to be used whenever an operation occurs.
+	 * Processes the negative button logic.
 	 */
-	private void updateBigDecimals() {
+	public void toggleNegative() {
 		currentNumber = new BigDecimal(currentNumberString);
-		bufferNumber = new BigDecimal(bufferNumberString);
+		currentNumber = currentNumber.multiply(new BigDecimal(-1));
+		currentNumberString = currentNumber.toPlainString();
 	}
-
+	
 	/**
-	 * Processes the calculation.
+	 * Processes the square root button logic.
 	 */
-	private void brainPower() {
-		throw new UnsupportedOperationException("Not yet implemented");
+	public void squareRoot() {
+		currentNumber = new BigDecimal(currentNumberString);
+		currentNumber = BigDecimal.valueOf(Math.sqrt(currentNumber.doubleValue()));
+		currentNumberString = currentNumber.toPlainString();
 	}
-
+	
+	
+	
 }
