@@ -1,11 +1,17 @@
 package com.brendanzhao.simplecalculator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author Brendan Zhao Represents the calculation that is created by the user.
  */
 public class Calculation {
+
+	/**
+	 * Represents the maximum length of input inside of the calculator.
+	 */
+	public static final int MAX_CALCULATION_LENGTH = 16;
 
 	/**
 	 * Represents the number the user creates by using the calculator.
@@ -27,6 +33,14 @@ public class Calculation {
 	 */
 	private BigDecimal bufferNumber;
 
+	/**
+	 * Represents the operation to be performed when doing calculations with two numbers.
+	 */
+	private char operator;
+
+	/**
+	 * Initializes a new instance of Calculation with default values.
+	 */
 	public Calculation() {
 		currentNumberString = "0";
 		bufferNumberString = "";
@@ -48,28 +62,68 @@ public class Calculation {
 		return bufferNumberString;
 	}
 
+	public void setOperator(char operator) {
+		this.operator = operator;
+	}
+
 	/**
 	 * Processes calculations involving only one number.
 	 * 
-	 * @param buttonPressed
-	 *            Represents the calculation to be performed.
+	 * @param singleOperation
+	 *            Specifies the type of single number operation to perform. This had to be passed in or else it would
+	 *            interfere with dual number operations.
 	 */
-	public void singleBrainPower(String buttonPressed) {
+	public void singleBrainPower(char singleOperation) {
 		currentNumber = new BigDecimal(currentNumberString);
 
-		switch (buttonPressed.charAt(0)) {
-		case '\u00B1':
-			currentNumber = currentNumber.multiply(new BigDecimal(-1));
-			break;
-		case '\u221a':
-			if (currentNumber.signum() == 1)
-				currentNumber = BigDecimal.valueOf(Math.sqrt(currentNumber.doubleValue()));
-			break;
-		default:
-			break;
+		switch (singleOperation) {
+			case '\u00B1':
+				currentNumber = currentNumber.multiply(new BigDecimal(-1));
+				break;
+
+			case '\u221a':
+				if (currentNumber.signum() == 1) {
+					currentNumber = BigDecimal.valueOf(Math.sqrt(currentNumber.doubleValue()));
+				}
+				break;
+
+			default:
+				break;
 		}
 
 		currentNumberString = currentNumber.toPlainString();
 	}
 
+	/**
+	 * Processes calculations involving two numbers and returns the result.
+	 */
+	public void doubleBrainPower() {
+		currentNumber = new BigDecimal(currentNumberString);
+		bufferNumber = new BigDecimal(bufferNumberString);
+
+		switch (operator) {
+			case '+':
+				currentNumber = bufferNumber.add(currentNumber);
+				break;
+
+			case '-':
+				currentNumber = bufferNumber.subtract(currentNumber);
+				break;
+
+			case '*':
+				currentNumber = bufferNumber.multiply(currentNumber);
+				break;
+
+			case '\u00F7':
+				currentNumber = bufferNumber.divide(currentNumber, MAX_CALCULATION_LENGTH, RoundingMode.HALF_UP)
+						.stripTrailingZeros();
+				break;
+
+			default:
+				break;
+		}
+
+		bufferNumberString = "";
+		currentNumberString = currentNumber.toPlainString();
+	}
 }
