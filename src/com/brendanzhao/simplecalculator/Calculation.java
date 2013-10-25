@@ -42,8 +42,7 @@ public class Calculation {
 	 * Initializes a new instance of Calculation with default values.
 	 */
 	public Calculation() {
-		currentNumberString = "0";
-		bufferNumberString = "";
+		resetCalculator();
 	}
 
 	public void setCurrentNumberString(String firstNumberString) {
@@ -115,6 +114,10 @@ public class Calculation {
 				break;
 
 			case '\u00F7':
+				if (currentNumber.equals(BigDecimal.ZERO)) {
+					resetCalculator();
+					return;
+				}
 				currentNumber = bufferNumber.divide(currentNumber, MAX_CALCULATION_LENGTH, RoundingMode.HALF_UP)
 						.stripTrailingZeros();
 				break;
@@ -125,5 +128,13 @@ public class Calculation {
 
 		bufferNumberString = "";
 		currentNumberString = currentNumber.toPlainString();
+	}
+	
+	/**
+	 * 
+	 */
+	public void resetCalculator() {
+		currentNumberString = "0";
+		bufferNumberString = "";
 	}
 }

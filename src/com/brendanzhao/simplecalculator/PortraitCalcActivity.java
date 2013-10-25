@@ -141,7 +141,7 @@ public class PortraitCalcActivity extends Activity implements OnClickListener {
 				break;
 
 			case R.id.clear:
-				calculation = new Calculation();
+				calculation.resetCalculator();
 				break;
 
 			default:
